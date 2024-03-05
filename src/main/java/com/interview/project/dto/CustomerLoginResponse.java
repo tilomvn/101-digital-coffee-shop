@@ -10,5 +10,6 @@ public class CustomerLoginResponse {
     @Builder.Default
     Boolean isSuccess = Boolean.TRUE;
 
+    String accessToken;
 
 }
