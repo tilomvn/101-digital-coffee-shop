@@ -57,7 +57,7 @@ public class CustomerControllerTest {
 
     @Test
     void placeOrder() throws Exception {
-        var placeOrderResponse = PlaceOrderResponse.builder().orderId(1L).build();
+        var placeOrderResponse = PlaceOrderResponse.builder().orderId(1L).queueNumber(1).build();
         when(customerService.placeOrder(any())).thenReturn(placeOrderResponse);
 
         var mvcResult = mockMvc.perform(post("/customer/order")
@@ -70,5 +70,6 @@ public class CustomerControllerTest {
 
         assertEquals(placeOrderResponse.getIsSuccess(), response.getIsSuccess());
         assertEquals(placeOrderResponse.getOrderId(), response.getOrderId());
+        assertEquals(placeOrderResponse.getQueueNumber(), response.getQueueNumber());
     }
 }

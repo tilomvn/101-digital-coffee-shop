@@ -11,4 +11,6 @@ public class PlaceOrderResponse {
     Boolean isSuccess = Boolean.TRUE;
 
     Long orderId;
+
+    Integer queueNumber;
 }

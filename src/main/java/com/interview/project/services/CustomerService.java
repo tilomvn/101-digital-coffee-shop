@@ -49,7 +49,7 @@ public class CustomerService {
         if (!shop.isPresent()) {
             throw new SystemRuntimeException(HttpStatus.BAD_REQUEST, ErrorInfo.INVALID_SHOP, "Invalid Shop");
         }
-        if (shop.get().getMaximumSizeOfQueue() < request.getQueueNumber()) {
+        if (shop.get().getMaximumSizeOfQueue() < shop.get().getCurrentNumberOfQueue()) {
             throw new SystemRuntimeException(HttpStatus.BAD_REQUEST, ErrorInfo.SHOP_QUEUE_IS_FULL, "Queue is full. Please wait!");
         }
 
@@ -63,20 +63,20 @@ public class CustomerService {
             throw new SystemRuntimeException(HttpStatus.BAD_REQUEST, ErrorInfo.INVALID_CUSTOMER, "Invalid Customer");
         }
 
-        //Update shop's queue
+        //Update shop queue
         var sh = shop.get();
         sh.setCurrentNumberOfQueue(sh.getCurrentNumberOfQueue() + 1);
-        shopRepository.save(sh);
+        sh = shopRepository.save(sh);
 
         //Place order
         var order = customerOrderRepository.save(CustomerOrder.builder()
                 .customer(customer.get())
                 .menuItem(orderItem.get())
                 .shop(shop.get())
-                .queueNumber(request.getQueueNumber())
+                .queueNumber(sh.getCurrentNumberOfQueue())
                 .orderStatus("CREATED")
                 .build());
 
-        return PlaceOrderResponse.builder().orderId(order.getId()).build();
+        return PlaceOrderResponse.builder().orderId(order.getId()).queueNumber(order.getQueueNumber()).build();
     }
 }

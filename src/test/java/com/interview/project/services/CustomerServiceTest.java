@@ -49,11 +49,11 @@ public class CustomerServiceTest {
         var request = new PlaceOrderRequest();
         request.setOrderItemId(1L);
         request.setShopId(1L);
-        request.setQueueNumber(1);
 
         var result = customerService.placeOrder(request);
 
         assertEquals(result.getOrderId(), 1L);
+        assertEquals(result.getQueueNumber(), 1);
     }
 
     @Test
@@ -62,7 +62,6 @@ public class CustomerServiceTest {
         var request = new PlaceOrderRequest();
         request.setOrderItemId(10L);
         request.setShopId(1L);
-        request.setQueueNumber(1);
 
         assertThrows(SystemRuntimeException.class,() -> customerService.placeOrder(request));
     }
