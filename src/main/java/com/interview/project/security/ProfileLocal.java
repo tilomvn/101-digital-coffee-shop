@@ -22,14 +22,6 @@ public class ProfileLocal {
         return user.getSub();
     }
 
-    public static List<SystemRole> getRoles() {
-        var user = local.get();
-        if (user == null) {
-            return null;
-        }
-        return user.getRoleList();
-    }
-
     public static String getJwtToken() {
         var user = local.get();
         if (user == null) {
