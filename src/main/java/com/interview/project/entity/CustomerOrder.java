@@ -16,7 +16,8 @@ import java.time.LocalTime;
 @Table(name = "customer_order")
 public class CustomerOrder extends BaseAuditEntity {
 
-    LocalDateTime orderDate;
+    @Builder.Default
+    LocalDateTime orderDate = LocalDateTime.now();
 
     Integer queueNumber;
 

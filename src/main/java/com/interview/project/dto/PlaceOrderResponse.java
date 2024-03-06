@@ -10,5 +10,5 @@ public class PlaceOrderResponse {
     @Builder.Default
     Boolean isSuccess = Boolean.TRUE;
 
-
+    Long orderId;
 }

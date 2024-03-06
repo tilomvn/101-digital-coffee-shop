@@ -23,7 +23,7 @@ public class Customer extends BaseAuditEntity {
     @Column(length = 50)
     String address;
 
-    @Column(length = 20)
+    @Column(length = 20, unique = true)
     String userName;
 
     @Column(length = 255)

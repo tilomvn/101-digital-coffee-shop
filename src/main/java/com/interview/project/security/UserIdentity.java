@@ -10,6 +10,10 @@ public class UserIdentity {
     String jwtToken;
     String refreshToken;
 
+    public UserIdentity(String sub) {
+        this.sub = sub;
+    }
+
     public String getSub() {
         return sub;
     }

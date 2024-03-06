@@ -2,9 +2,7 @@ package com.interview.project.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Builder
@@ -20,4 +18,7 @@ public class MenuItem extends BaseAuditEntity {
     String itemName;
 
     Integer price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    Shop shop;
 }

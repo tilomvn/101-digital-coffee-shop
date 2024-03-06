@@ -1,8 +1,13 @@
 package com.interview.project.security;
 
+import com.interview.project.exception.ErrorInfo;
+import com.interview.project.exception.SystemRuntimeException;
 import com.interview.project.util.AESUtil;
 import com.interview.project.util.JSON;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,23 +24,24 @@ import static com.interview.project.util.Constants.*;
 
 @WebFilter(value = "/*")
 @Component
+@AllArgsConstructor
 @Slf4j
 public class AuthorizationFilter extends OncePerRequestFilter {
+
+    private final JWTProvider jwtProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws IOException {
         try {
-            var identityJson = request.getHeader(IDENTITY);
-            var userEntity = JSON.fromJson(identityJson, UserIdentity.class);
-            userEntity.setRoleList(Stream.of(AESUtil.newInstance().setSecretKey(ROLE_HASH_KEY).decrypt(userEntity.getRoles())
-                    .split(ROLE_SEPARATOR))
-                    .map(role -> SystemRole.valueOf(role)).collect(Collectors.toList()));
+            var token = request.getHeader(HttpHeaders.AUTHORIZATION);
+            var userId = jwtProvider.verify(token);
+            var userEntity = new UserIdentity(userId);
             ProfileLocal.set(userEntity);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             log.error("Invalid User Identity:", e);
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "UnAuthorized");
         } finally {
             ProfileLocal.clean();
         }

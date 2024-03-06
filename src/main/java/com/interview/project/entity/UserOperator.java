@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "user_operator")
 public class UserOperator extends BaseAuditEntity {
 
-    @Column(length = 20)
+    @Column(length = 20, unique = true)
     String userName;
 
     @Column(length = 255)
