@@ -45,17 +45,14 @@ public class CustomerService {
 
     public PlaceOrderResponse placeOrder(PlaceOrderRequest request) {
         //Validate Request
-        var shop = shopRepository.findById(request.getShopId());
-        if (!shop.isPresent()) {
-            throw new SystemRuntimeException(HttpStatus.BAD_REQUEST, ErrorInfo.INVALID_SHOP, "Invalid Shop");
-        }
-        if (shop.get().getMaximumSizeOfQueue() < shop.get().getCurrentNumberOfQueue()) {
-            throw new SystemRuntimeException(HttpStatus.BAD_REQUEST, ErrorInfo.SHOP_QUEUE_IS_FULL, "Queue is full. Please wait!");
-        }
-
         var orderItem = menuItemRepository.findById(request.getOrderItemId());
         if (!orderItem.isPresent()) {
             throw new SystemRuntimeException(HttpStatus.BAD_REQUEST, ErrorInfo.INVALID_MENU_ITEM, "Invalid Menu Item");
+        }
+
+        var shop = orderItem.get().getShop();
+        if (shop.getMaximumSizeOfQueue() < shop.getCurrentNumberOfQueue()) {
+            throw new SystemRuntimeException(HttpStatus.BAD_REQUEST, ErrorInfo.SHOP_QUEUE_IS_FULL, "Queue is full. Please wait!");
         }
 
         var customer = customerRepository.findById(Long.valueOf(ProfileLocal.getUserId()));
@@ -64,16 +61,14 @@ public class CustomerService {
         }
 
         //Update shop queue
-        var sh = shop.get();
-        sh.setCurrentNumberOfQueue(sh.getCurrentNumberOfQueue() + 1);
-        sh = shopRepository.save(sh);
+        shop.setCurrentNumberOfQueue(shop.getCurrentNumberOfQueue() + 1);
+        shop = shopRepository.save(shop);
 
         //Place order
         var order = customerOrderRepository.save(CustomerOrder.builder()
                 .customer(customer.get())
                 .menuItem(orderItem.get())
-                .shop(shop.get())
-                .queueNumber(sh.getCurrentNumberOfQueue())
+                .queueNumber(shop.getCurrentNumberOfQueue())
                 .orderStatus("CREATED")
                 .build());
 

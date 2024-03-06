@@ -22,9 +22,6 @@ public class CustomerOrder extends BaseAuditEntity {
     String orderStatus;//CREATED, WAITING, COMPLETE
 
     @ManyToOne(fetch = FetchType.LAZY)
-    Shop shop;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY)

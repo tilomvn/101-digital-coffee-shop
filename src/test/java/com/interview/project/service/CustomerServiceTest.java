@@ -48,7 +48,6 @@ public class CustomerServiceTest {
         ProfileLocal.set(new UserIdentity("1"));
         var request = new PlaceOrderRequest();
         request.setOrderItemId(1L);
-        request.setShopId(1L);
 
         var result = customerService.placeOrder(request);
 
@@ -61,7 +60,6 @@ public class CustomerServiceTest {
         ProfileLocal.set(new UserIdentity("1"));
         var request = new PlaceOrderRequest();
         request.setOrderItemId(10L);
-        request.setShopId(1L);
 
         assertThrows(SystemRuntimeException.class,() -> customerService.placeOrder(request));
     }
