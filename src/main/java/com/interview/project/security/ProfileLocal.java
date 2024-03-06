@@ -21,20 +21,4 @@ public class ProfileLocal {
         }
         return user.getSub();
     }
-
-    public static String getJwtToken() {
-        var user = local.get();
-        if (user == null) {
-            return null;
-        }
-        return user.getJwtToken();
-    }
-
-    public static String getRefreshToken() {
-        var user = local.get();
-        if (user == null) {
-            return null;
-        }
-        return user.getRefreshToken();
-    }
 }

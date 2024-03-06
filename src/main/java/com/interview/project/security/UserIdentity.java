@@ -4,8 +4,6 @@ public class UserIdentity {
 
     String sub;
     String roles;
-    String jwtToken;
-    String refreshToken;
 
     public UserIdentity(String sub) {
         this.sub = sub;
@@ -27,19 +25,4 @@ public class UserIdentity {
         this.roles = roles;
     }
 
-    public String getJwtToken() {
-        return jwtToken;
-    }
-
-    public void setJwtToken(String jwtToken) {
-        this.jwtToken = jwtToken;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
 }
