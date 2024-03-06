@@ -1,9 +1,6 @@
 package com.interview.project.controller;
 
-import com.interview.project.dto.CustomerLoginRequest;
-import com.interview.project.dto.CustomerLoginResponse;
-import com.interview.project.dto.PlaceOrderRequest;
-import com.interview.project.dto.PlaceOrderResponse;
+import com.interview.project.dto.*;
 import com.interview.project.services.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

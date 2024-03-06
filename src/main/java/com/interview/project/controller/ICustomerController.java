@@ -1,10 +1,8 @@
 package com.interview.project.controller;
 
-import com.interview.project.dto.CustomerLoginRequest;
-import com.interview.project.dto.CustomerLoginResponse;
-import com.interview.project.dto.PlaceOrderRequest;
-import com.interview.project.dto.PlaceOrderResponse;
+import com.interview.project.dto.*;
 import com.interview.project.exception.ErrorResponse;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

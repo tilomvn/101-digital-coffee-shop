@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * For security solution, user web filter to check valid access token in each request
+ */
 @WebFilter(value = "/*")
 @Component
 @AllArgsConstructor
@@ -32,7 +35,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             log.error("Invalid User Identity:", e);
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "UnAuthorized");
+            response.sendRedirect("/security/unauthorized");
         } finally {
             ProfileLocal.clean();
         }
@@ -45,6 +48,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 || requestURI.contains("api-docs")
                 || requestURI.contains("actuator")
                 || requestURI.endsWith("/customer/login")
+                || requestURI.endsWith("/security/unauthorized")
                 || requestURI.contains("/h2-console");
     }
 }
