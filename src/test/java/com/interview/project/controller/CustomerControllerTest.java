@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.interview.project.dto.CustomerLoginResponse;
 import com.interview.project.dto.PlaceOrderResponse;
 import com.interview.project.security.JWTProvider;
-import com.interview.project.services.CustomerService;
+import com.interview.project.service.CustomerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

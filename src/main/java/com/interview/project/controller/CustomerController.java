@@ -1,7 +1,7 @@
 package com.interview.project.controller;
 
 import com.interview.project.dto.*;
-import com.interview.project.services.CustomerService;
+import com.interview.project.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

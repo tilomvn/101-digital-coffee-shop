@@ -1,4 +1,4 @@
-package com.interview.project.services;
+package com.interview.project.service;
 
 import com.interview.project.dto.CustomerLoginRequest;
 import com.interview.project.dto.CustomerLoginResponse;
