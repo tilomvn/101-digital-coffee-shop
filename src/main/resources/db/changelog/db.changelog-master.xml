@@ -169,12 +169,5 @@
         <addForeignKeyConstraint baseTableName="customer_order_detail" baseColumnNames="customer_order_id"
                                  constraintName="customer_order_id_fk"
                                  referencedTableName="customer_order" referencedColumnNames="id"/>
-<!--        <rollback>-->
-<!--            <dropTable tableName="customer_order"/>-->
-<!--            <dropTable tableName="customer"/>-->
-<!--            <dropTable tableName="shop"/>-->
-<!--            <dropTable tableName="menu_item"/>-->
-<!--            <dropTable tableName="user_operator"/>-->
-<!--        </rollback>-->
     </changeSet>
 </databaseChangeLog>

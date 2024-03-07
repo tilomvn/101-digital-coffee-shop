@@ -23,7 +23,7 @@ public class SecurityControllerTest {
     private ObjectMapper mapper;
 
     @Test
-    void anauthorized() throws Exception {
+    void securityfallback() throws Exception {
         var mvcResult = mockMvc.perform(get("/security/unauthorized"))
                                             .andExpect(status().isUnauthorized()).andReturn();
 

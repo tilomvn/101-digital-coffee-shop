@@ -1,4 +1,5 @@
 # Database ERD ![](/src/main/resources/static/coffeeshop_erd.jpg "")
+   About database, I am using h2db instead of postgres to demonstrate so you don't need to set up server
 # Customer Order Use Case ![](/src/main/resources/static/customer_use_case.jpg "")
 # Security Solution
    For security, using JWT Token to authorize request.
