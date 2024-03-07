@@ -51,7 +51,7 @@ public class CustomerService {
         }
 
         var shop = orderItem.get().getShop();
-        if (shop.getMaximumSizeOfQueue() < shop.getCurrentNumberOfQueue()) {
+        if (shop.getMaximumSizeOfQueue() <= shop.getCurrentNumberOfQueue()) {
             throw new SystemRuntimeException(HttpStatus.BAD_REQUEST, ErrorInfo.SHOP_QUEUE_IS_FULL, "Queue is full. Please wait!");
         }
 
