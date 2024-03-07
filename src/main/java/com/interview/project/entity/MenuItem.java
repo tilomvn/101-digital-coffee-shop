@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Table(name = "menu_item")
 public class MenuItem extends BaseAuditEntity {
 
-    @Column(length = 30)
+    @Column(length = 30, nullable = false)
     String itemName;
 
     Integer price;

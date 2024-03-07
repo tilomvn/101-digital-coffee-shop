@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="01" author="NghiaHo">
+        <createTable tableName="user_operator" remarks="A table to contain all user operator">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="user_name" type="varchar(15)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+            </column>
+            <column name="created_by" type="varchar(36)">
+            </column>
+            <column name="modified_at" type="datetime">
+            </column>
+            <column name="modified_by" type="varchar(36)">
+            </column>
+        </createTable>
+
+        <createTable tableName="shop" remarks="A table to contain all stores">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="longitude" type="double">
+            </column>
+            <column name="latitude" type="double">
+            </column>
+            <column name="contact_detail" type="varchar(255)">
+            </column>
+            <column name="maximum_size_of_queue" type="int">
+            </column>
+            <column name="current_number_of_queue" type="int">
+            </column>
+            <column name="open_time" type="time">
+            </column>
+            <column name="close_time" type="time">
+            </column>
+            <column name="user_operator_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+            </column>
+            <column name="created_by" type="varchar(36)">
+            </column>
+            <column name="modified_at" type="datetime">
+            </column>
+            <column name="modified_by" type="varchar(36)">
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="shop" baseColumnNames="user_operator_id"
+                                 constraintName="user_operator_id_fk"
+                                 referencedTableName="user_operator" referencedColumnNames="id"/>
+
+        <createTable tableName="menu_item" remarks="A table to contain all shop menu item">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="item_name" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="int">
+            </column>
+            <column name="shop_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+            </column>
+            <column name="created_by" type="varchar(36)">
+            </column>
+            <column name="modified_at" type="datetime">
+            </column>
+            <column name="modified_by" type="varchar(36)">
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="menu_item" baseColumnNames="shop_id"
+                                 constraintName="shop_id_fk"
+                                 referencedTableName="shop" referencedColumnNames="id"/>
+
+        <createTable tableName="customer" remarks="A table to contain all customer">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="phone_number" type="varchar(12)">
+            </column>
+            <column name="name" type="varchar(30)">
+            </column>
+            <column name="address" type="varchar(50)">
+            </column>
+            <column name="user_name" type="varchar(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+            </column>
+            <column name="created_by" type="varchar(36)">
+            </column>
+            <column name="modified_at" type="datetime">
+            </column>
+            <column name="modified_by" type="varchar(36)">
+            </column>
+        </createTable>
+
+        <createTable tableName="customer_order" remarks="A table to contain all customer order">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="order_date" type="date">
+            </column>
+            <column name="queue_number" type="int">
+            </column>
+            <column name="order_status" type="varchar(20)">
+            </column>
+            <column name="customer_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="menu_item_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+            </column>
+            <column name="created_by" type="varchar(36)">
+            </column>
+            <column name="modified_at" type="datetime">
+            </column>
+            <column name="modified_by" type="varchar(36)">
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="customer_order" baseColumnNames="customer_id"
+                                 constraintName="customer_id_fk"
+                                 referencedTableName="customer" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="customer_order" baseColumnNames="menu_item_id"
+                                 constraintName="menu_item_id_fk"
+                                 referencedTableName="menu_item" referencedColumnNames="id"/>
+
+<!--        <rollback>-->
+<!--            <dropTable tableName="customer_order"/>-->
+<!--            <dropTable tableName="customer"/>-->
+<!--            <dropTable tableName="shop"/>-->
+<!--            <dropTable tableName="menu_item"/>-->
+<!--            <dropTable tableName="user_operator"/>-->
+<!--        </rollback>-->
+    </changeSet>
+</databaseChangeLog>
