@@ -5,6 +5,8 @@ import com.interview.project.dto.CustomerLoginResponse;
 import com.interview.project.dto.PlaceOrderRequest;
 import com.interview.project.dto.PlaceOrderResponse;
 import com.interview.project.entity.CustomerOrder;
+import com.interview.project.entity.CustomerOrderDetail;
+import com.interview.project.entity.MenuItem;
 import com.interview.project.exception.ErrorInfo;
 import com.interview.project.exception.SystemRuntimeException;
 import com.interview.project.repository.ICustomerOrderRepository;
@@ -17,6 +19,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -45,12 +50,17 @@ public class CustomerService {
 
     public PlaceOrderResponse placeOrder(PlaceOrderRequest request) {
         //Validate Request
-        var orderItem = menuItemRepository.findById(request.getOrderItemId());
-        if (!orderItem.isPresent()) {
-            throw new SystemRuntimeException(HttpStatus.BAD_REQUEST, ErrorInfo.INVALID_MENU_ITEM, "Invalid Menu Item");
+        var orderItems = new ArrayList<MenuItem>();
+        for (PlaceOrderRequest.Data_1 orderItem : request.getOrderItem()) {
+            var orderItemDb = menuItemRepository.findById(orderItem.getOrderItemId());
+            if (!orderItemDb.isPresent()) {
+                throw new SystemRuntimeException(HttpStatus.BAD_REQUEST, ErrorInfo.INVALID_MENU_ITEM, "Invalid Menu Item");
+            }
+            orderItemDb.get().setQuantity(orderItem.getQuantity());
+            orderItems.add(orderItemDb.get());
         }
 
-        var shop = orderItem.get().getShop();
+        var shop = orderItems.get(0).getShop();
         if (shop.getMaximumSizeOfQueue() <= shop.getCurrentNumberOfQueue()) {
             throw new SystemRuntimeException(HttpStatus.BAD_REQUEST, ErrorInfo.SHOP_QUEUE_IS_FULL, "Queue is full. Please wait!");
         }
@@ -65,12 +75,16 @@ public class CustomerService {
         shop = shopRepository.save(shop);
 
         //Place order
-        var order = customerOrderRepository.save(CustomerOrder.builder()
+        var order = CustomerOrder.builder()
                 .customer(customer.get())
-                .menuItem(orderItem.get())
                 .queueNumber(shop.getCurrentNumberOfQueue())
                 .orderStatus("CREATED")
-                .build());
+                .build();
+        order.setCustomerOrderDetail(orderItems.stream().map(orderItem -> CustomerOrderDetail.builder()
+                .menuItem(orderItem)
+                .quantity(orderItem.getQuantity())
+                .build()).collect(Collectors.toList()));
+        order = customerOrderRepository.save(order);
 
         return PlaceOrderResponse.builder().orderId(order.getId()).queueNumber(order.getQueueNumber()).build();
     }

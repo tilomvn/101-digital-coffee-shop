@@ -127,9 +127,6 @@
             <column name="customer_id" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="menu_item_id" type="int">
-                <constraints nullable="false"/>
-            </column>
             <column name="created_at" type="datetime">
             </column>
             <column name="created_by" type="varchar(36)">
@@ -143,10 +140,35 @@
         <addForeignKeyConstraint baseTableName="customer_order" baseColumnNames="customer_id"
                                  constraintName="customer_id_fk"
                                  referencedTableName="customer" referencedColumnNames="id"/>
-        <addForeignKeyConstraint baseTableName="customer_order" baseColumnNames="menu_item_id"
+
+        <createTable tableName="customer_order_detail" remarks="A table to contain all customer order detail">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="quantity" type="int">
+            </column>
+            <column name="menu_item_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_order_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+            </column>
+            <column name="created_by" type="varchar(36)">
+            </column>
+            <column name="modified_at" type="datetime">
+            </column>
+            <column name="modified_by" type="varchar(36)">
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="customer_order_detail" baseColumnNames="menu_item_id"
                                  constraintName="menu_item_id_fk"
                                  referencedTableName="menu_item" referencedColumnNames="id"/>
-
+        <addForeignKeyConstraint baseTableName="customer_order_detail" baseColumnNames="customer_order_id"
+                                 constraintName="customer_order_id_fk"
+                                 referencedTableName="customer_order" referencedColumnNames="id"/>
 <!--        <rollback>-->
 <!--            <dropTable tableName="customer_order"/>-->
 <!--            <dropTable tableName="customer"/>-->

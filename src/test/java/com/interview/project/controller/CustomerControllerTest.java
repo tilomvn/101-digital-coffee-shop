@@ -63,7 +63,7 @@ public class CustomerControllerTest {
         var mvcResult = mockMvc.perform(post("/customer/order")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, jwtProvider.generate("1"))
-                .content("{\"orderItemId\":1}"))
+                .content("{\"orderItem\":[{\"orderItemId\":1,\"quantity\":1},{\"orderItemId\":2,\"quantity\":1}]}"))
                 .andExpect(status().isOk()).andReturn();
 
         var response = mapper.readValue(mvcResult.getResponse().getContentAsString(), PlaceOrderResponse.class);

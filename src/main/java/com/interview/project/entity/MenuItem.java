@@ -21,4 +21,7 @@ public class MenuItem extends BaseAuditEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     Shop shop;
+
+    @Transient
+    Integer quantity;
 }
